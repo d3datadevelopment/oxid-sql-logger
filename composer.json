@@ -1,5 +1,5 @@
 {
-    "name": "tumtum/oxid-sql-logger",
+    "name": "d3/oxid-sql-logger",
     "description": "Returns all SQL queries in the browser.",
     "type": "library",
     "require": {
@@ -8,7 +8,7 @@
     "license": "GPL-3.0",
     "autoload": {
         "psr-4": {
-            "tm\\oxid\\sql\\logger\\": "./src"
+            "D3\\OxidSqlLogger\\": "./src"
         },
         "files": [
             "./src/functions.php"
@@ -18,6 +18,11 @@
         {
             "name": "Tobias Matthaiou",
             "email": "developer@tobimat.eu"
+        },
+        {
+            "name": "D3 Data Development (Inh. Thomas Dartsch)",
+            "email": "info@shopmodule.com",
+            "homepage": "http://www.d3data.de"
         }
     ]
 }
