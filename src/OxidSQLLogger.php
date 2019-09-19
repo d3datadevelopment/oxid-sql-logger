@@ -39,7 +39,7 @@ class OxidSQLLogger implements SQLLogger
     public function startQuery($sql, array $params = null, array $types = null)
     {
         Monolog\Registry::sql()->addDebug(
-            $this->message,
+            $this->message ? $this->message : $sql,
             [
                 'query' => $sql,
                 'params' => $params,
