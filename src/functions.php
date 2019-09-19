@@ -5,8 +5,8 @@
  * Time: 23:11
  */
 
-function StartSQLLog() {
-    \tm\oxid\sql\logger\OxidEsalesDatabase::enableLogger();
+function StartSQLLog($message = null, $file = null, $line = null) {
+    \tm\oxid\sql\logger\OxidEsalesDatabase::enableLogger($message, $file, $line);
 }
 
 function StopSQLLog() {
