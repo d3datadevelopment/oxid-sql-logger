@@ -1,17 +1,17 @@
 <?php
+
 /**
- * Autor: Tobias Matthaiou <developer@tobimat.eu>
- * Date: 2019-08-21
- * Time: 07:50
+ * @author    Tobias Matthaiou <developer@tobimat.eu>
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
-namespace tm\oxid\sql\logger;
+
+namespace D3\OxidSqlLogger;
 
 use Monolog;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * Class Factory
- * @package tm\oxid\sql\logger
  */
 class LoggerFactory
 {

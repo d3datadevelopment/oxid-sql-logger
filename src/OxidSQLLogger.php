@@ -1,18 +1,17 @@
 <?php
+
 /**
- * Autor: Tobias Matthaiou <developer@tobimat.eu>
- * Date: 2019-08-20
- * Time: 21:33
+ * @author    Tobias Matthaiou <developer@tobimat.eu>
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
 
-namespace tm\oxid\sql\logger;
+namespace D3\OxidSqlLogger;
 
 use Doctrine\DBAL\Logging\SQLLogger;
 use Monolog;
 
 /**
  * Class OxidSQLLogger
- * @package tm\oxid\sql\logger
  */
 class OxidSQLLogger implements SQLLogger
 {
@@ -46,7 +45,7 @@ class OxidSQLLogger implements SQLLogger
                 'params' => $params,
                 'types' => $types,
                 'calling_file'   => $this->file,
-                'calling_line'   => $this->line,
+                'calling_line'   => $this->line
             ]
         );
     }

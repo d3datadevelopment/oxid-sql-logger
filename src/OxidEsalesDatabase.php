@@ -1,19 +1,17 @@
 <?php
+
 /**
- * Autor: Tobias Matthaiou <developer@tobimat.eu>
- * Date: 2019-08-20
- * Time: 21:56
+ * @author    Tobias Matthaiou <developer@tobimat.eu>
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
 
-namespace tm\oxid\sql\logger;
+namespace D3\OxidSqlLogger;
 
 use Doctrine\DBAL\Configuration;
 
 /**
  * Class OxidEsalesDatabase
  * Is a depenction injection Helper Class
- *
- * @package tm\oxid\sql\logger
  */
 class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database
 {

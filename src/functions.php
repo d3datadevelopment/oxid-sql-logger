@@ -1,14 +1,14 @@
 <?php
+
 /**
- * Autor: Tobias Matthaiou <developer@tobimat.eu>
- * Date: 2019-08-20
- * Time: 23:11
+ * @author    Tobias Matthaiou <developer@tobimat.eu>
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
 
-function StartSQLLog($message = null, $file = null, $line = null) {
-    \tm\oxid\sql\logger\OxidEsalesDatabase::enableLogger($message, $file, $line);
+function D3StartSQLLog($message = null, $file = null, $line = null) {
+    \D3\OxidSqlLogger\OxidEsalesDatabase::enableLogger($message, $file, $line);
 }
 
-function StopSQLLog() {
-    \tm\oxid\sql\logger\OxidEsalesDatabase::disableLogger();
+function D3StopSQLLog() {
+    \D3\OxidSqlLogger\OxidEsalesDatabase::disableLogger();
 }
