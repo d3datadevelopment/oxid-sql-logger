@@ -72,7 +72,7 @@ class LoggerFactory
     private function getProcessors()
     {
         return [
-            new Monolog\Processor\IntrospectionProcessor(Monolog\Logger::DEBUG, ['tm\\oxid\\sql\\logger', 'Doctrine\\DBAL\\Connection', 'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database']),
+            new Monolog\Processor\IntrospectionProcessor(Monolog\Logger::DEBUG, ['D3\\OxidSqlLogger', 'Doctrine\\DBAL\\Connection', 'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database']),
             new Monolog\Processor\PsrLogMessageProcessor(),
         ];
     }
