@@ -16,21 +16,25 @@ use Monolog;
 class OxidSQLLogger implements SQLLogger
 {
     public $message;
-    public $file;
-    public $line;
+    public $logStartingFile;
+    public $logStartingLine;
+    public $logStartingClass;
+    public $logStartingFunction;
 
     /**
      * @inheritDoc
      */
-    public function __construct($message = null, $file = null, $line = null)
+    public function __construct($file, $line, $class, $function, $message = null)
     {
         if (!Monolog\Registry::hasLogger('sql')) {
             Monolog\Registry::addLogger((new LoggerFactory())->create('sql'));
         }
 
-        $this->message = $message;
-        $this->file     = $file;
-        $this->line     = $line;
+        $this->message             = $message;
+        $this->logStartingFile      = $file;
+        $this->logStartingLine      = $line;
+        $this->logStartingClass     = $class;
+        $this->logStartingFunction  = $function;
     }
 
     /**
@@ -41,11 +45,14 @@ class OxidSQLLogger implements SQLLogger
         Monolog\Registry::sql()->addDebug(
             $this->message ? $this->message : $sql,
             [
-                'query' => $sql,
-                'params' => $params,
-                'types' => $types,
-                'calling_file'   => $this->file,
-                'calling_line'   => $this->line
+                'query'                 => $sql,
+                'params'                => $params,
+                'types'                 => $types,
+                'logStartingFile'       => $this->logStartingFile,
+                'logStartingLine'       => $this->logStartingLine,
+                'logStartingClass'      => $this->logStartingClass,
+                'logStartingFunction'   => $this->logStartingFunction,
+
             ]
         );
     }
