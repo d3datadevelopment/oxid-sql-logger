@@ -34,6 +34,7 @@ class LoggerFactory
             $handlers[] = $this->getStreamHandler();
         } else {
             $handlers[] = $this->getBrowserConsoleHandler();
+            $handlers[] = $this->getFirePHPHandler();
         }
         return $handlers;
     }
@@ -53,7 +54,14 @@ class LoggerFactory
 
         $ttl_color = "$channel $level_name: $message {$newline} $context {$newline} %extra%" . PHP_EOL;
 
-        $streamHandler->setFormatter(new Monolog\Formatter\LineFormatter($ttl_color));
+        $streamHandler->setFormatter(
+            new Monolog\Formatter\LineFormatter(
+                $ttl_color,
+                null,
+                true,
+                true
+            )
+        );
 
         return $streamHandler;
     }
@@ -64,6 +72,14 @@ class LoggerFactory
     private function getBrowserConsoleHandler()
     {
         return new Monolog\Handler\BrowserConsoleHandler();
+    }
+
+    /**
+     * @return Monolog\Handler\FirePHPHandler
+     */
+    private function getFirePHPHandler()
+    {
+        return new Monolog\Handler\FirePHPHandler();
     }
 
     /**
