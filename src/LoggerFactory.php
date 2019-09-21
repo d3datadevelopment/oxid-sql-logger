@@ -1,17 +1,17 @@
 <?php
+
 /**
- * Autor: Tobias Matthaiou <developer@tobimat.eu>
- * Date: 2019-08-21
- * Time: 07:50
+ * @author    Tobias Matthaiou <developer@tobimat.eu>
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
-namespace tm\oxid\sql\logger;
+
+namespace D3\OxidSqlLogger;
 
 use Monolog;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
  * Class Factory
- * @package tm\oxid\sql\logger
  */
 class LoggerFactory
 {
@@ -34,6 +34,7 @@ class LoggerFactory
             $handlers[] = $this->getStreamHandler();
         } else {
             $handlers[] = $this->getBrowserConsoleHandler();
+            $handlers[] = $this->getFirePHPHandler();
         }
         return $handlers;
     }
@@ -53,7 +54,14 @@ class LoggerFactory
 
         $ttl_color = "$channel $level_name: $message {$newline} $context {$newline} %extra%" . PHP_EOL;
 
-        $streamHandler->setFormatter(new Monolog\Formatter\LineFormatter($ttl_color));
+        $streamHandler->setFormatter(
+            new Monolog\Formatter\LineFormatter(
+                $ttl_color,
+                null,
+                true,
+                true
+            )
+        );
 
         return $streamHandler;
     }
@@ -67,12 +75,20 @@ class LoggerFactory
     }
 
     /**
+     * @return Monolog\Handler\FirePHPHandler
+     */
+    private function getFirePHPHandler()
+    {
+        return new Monolog\Handler\FirePHPHandler();
+    }
+
+    /**
      * @return array
      */
     private function getProcessors()
     {
         return [
-            new Monolog\Processor\IntrospectionProcessor(Monolog\Logger::DEBUG, ['tm\\oxid\\sql\\logger', 'Doctrine\\DBAL\\Connection', 'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database']),
+            new Monolog\Processor\IntrospectionProcessor(Monolog\Logger::DEBUG, ['D3\\OxidSqlLogger', 'Doctrine\\DBAL\\Connection', 'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database']),
             new Monolog\Processor\PsrLogMessageProcessor(),
         ];
     }

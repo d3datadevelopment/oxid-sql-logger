@@ -6,7 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2019-09-20
+
+### Added
+
+- add log message
+- add position specifications of the calling source code 
+
 ## [1.0.0] - 2019-07-21
+
+available in tumtum/oxid-sql-logger package only
 
 ### Added
 

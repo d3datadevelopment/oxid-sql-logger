@@ -1,29 +1,40 @@
 <?php
+
 /**
- * Autor: Tobias Matthaiou <developer@tobimat.eu>
- * Date: 2019-08-20
- * Time: 21:33
+ * @author    Tobias Matthaiou <developer@tobimat.eu>
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
 
-namespace tm\oxid\sql\logger;
+namespace D3\OxidSqlLogger;
 
 use Doctrine\DBAL\Logging\SQLLogger;
 use Monolog;
 
 /**
  * Class OxidSQLLogger
- * @package tm\oxid\sql\logger
  */
 class OxidSQLLogger implements SQLLogger
 {
+    public $message;
+    public $logStartingFile;
+    public $logStartingLine;
+    public $logStartingClass;
+    public $logStartingFunction;
+
     /**
      * @inheritDoc
      */
-    public function __construct()
+    public function __construct($file, $line, $class, $function, $message = null)
     {
         if (!Monolog\Registry::hasLogger('sql')) {
             Monolog\Registry::addLogger((new LoggerFactory())->create('sql'));
         }
+
+        $this->message             = $message;
+        $this->logStartingFile      = $file;
+        $this->logStartingLine      = $line;
+        $this->logStartingClass     = $class;
+        $this->logStartingFunction  = $function;
     }
 
     /**
@@ -31,7 +42,19 @@ class OxidSQLLogger implements SQLLogger
      */
     public function startQuery($sql, array $params = null, array $types = null)
     {
-        Monolog\Registry::sql()->addDebug($sql, ['params' => $params, 'types' => $types]);
+        Monolog\Registry::sql()->addDebug(
+            $this->message ? $this->message : $sql,
+            [
+                'query'                 => $sql,
+                'params'                => $params,
+                'types'                 => $types,
+                'logStartingFile'       => $this->logStartingFile,
+                'logStartingLine'       => $this->logStartingLine,
+                'logStartingClass'      => $this->logStartingClass,
+                'logStartingFunction'   => $this->logStartingFunction,
+
+            ]
+        );
     }
 
     /**
