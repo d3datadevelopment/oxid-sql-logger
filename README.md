@@ -30,3 +30,6 @@ CLI:
 
 ![Example CLI](https://raw.githubusercontent.com/d3datadevelopment/oxid-sql-logger/master/img/screenshot-cli.jpg)
 
+## Credits
+
+Many thanks to [Tobias Matthaiou](https://github.com/TumTum/oxid-sql-logger) for his inspiration.
