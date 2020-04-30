@@ -9,6 +9,7 @@ namespace D3\OxidSqlLogger;
 
 use Doctrine\DBAL\Logging\SQLLogger;
 use Monolog;
+use NilPortugues\Sql\QueryFormatter\Formatter;
 
 /**
  * Class OxidSQLLogger
@@ -47,14 +48,12 @@ class OxidSQLLogger implements SQLLogger
      */
     public function startQuery($sql, array $params = null, array $types = null)
     {
-        $formatter = new Formatter();
-
         if ($this->SQLQuery) {
             $this->SQLQuery->setCanceled();
             $this->stopQuery();
         }
 
-        $this->SQLQuery = (new SQLQuery()) ->setSql($formatter->format($sql))
+        $this->SQLQuery = (new SQLQuery()) ->setSql($sql)
                                             ->setParams($params)
                                             ->setTypes($types)
                                             ->setLogStartingFile($this->logStartingFile)
@@ -69,9 +68,12 @@ class OxidSQLLogger implements SQLLogger
     public function stopQuery()
     {
         if ($this->SQLQuery) {
+            $formatter = new Formatter();
+
             Monolog\Registry::sql()->addDebug(
                 '['.$this->SQLQuery->getReadableElapsedTime().'] ' . ( $this->message ? $this->message : $this->SQLQuery->getSql() ),
                 [
+                    'query' => $formatter->format($this->SQLQuery->getSql()),
                     'params' => $this->SQLQuery->getParams(),
                     'time' => $this->SQLQuery->getElapsedTime(),
                     'types' => $this->SQLQuery->getTypes(),

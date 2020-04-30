@@ -109,6 +109,14 @@ class SQLQuery
     }
     
     /**
+     * @return string
+     */
+    public function getLogStartingFile()
+    {
+        return $this->logStartingFile;
+    }
+    
+    /**
      * @param $file
      * @return SQLQuery
      */
@@ -116,6 +124,14 @@ class SQLQuery
     {
         $this->logStartingFile = $file;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogStartingLine()
+    {
+        return $this->logStartingLine;
     }
     
     /**
@@ -127,6 +143,14 @@ class SQLQuery
         $this->logStartingLine = $line;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getLogStartingClass()
+    {
+        return $this->logStartingClass;
+    }
     
     /**
      * @param $classname
@@ -136,6 +160,14 @@ class SQLQuery
     {
         $this->logStartingClass = $classname;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogStartingFunction()
+    {
+        return $this->logStartingFunction;
     }
     
     /**

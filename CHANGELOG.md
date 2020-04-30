@@ -8,13 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.2.0] - 2019-10-01
+## [1.2.0] - 2020-04-30
 
 ### Added
 
-- SQL Query Monitor show at the Page how many SQL queries have been fired.
+- Format SQL query 
 - Measures the SQL execution time
-- Testing framework [phpspec](https://www.phpspec.net/en/stable/manual/introduction.html)
 
 ---
 
