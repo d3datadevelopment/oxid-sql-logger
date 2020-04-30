@@ -13,4 +13,4 @@ function D3StopSQLLog() {
     \D3\OxidSqlLogger\OxidEsalesDatabase::disableLogger();
 }
 
-(new \D3\OxidSqlLogger\AutoInstallSmaryPlugin())->runInstall();
+// (new \D3\OxidSqlLogger\AutoInstallSmaryPlugin())->runInstall();
