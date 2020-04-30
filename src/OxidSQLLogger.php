@@ -22,6 +22,11 @@ class OxidSQLLogger implements SQLLogger
     public $logStartingFunction;
 
     /**
+     * @var SQLQuery
+     */
+    private $SQLQuery = null;
+
+    /**
      * @inheritDoc
      */
     public function __construct($file, $line, $class, $function, $message = null)
@@ -44,19 +49,18 @@ class OxidSQLLogger implements SQLLogger
     {
         $formatter = new Formatter();
 
-        Monolog\Registry::sql()->addDebug(
-            $this->message ? $this->message : $sql,
-            [
-                'query'                 => $formatter->format($sql),
-                'params'                => $params,
-                'types'                 => $types,
-                'logStartingFile'       => $this->logStartingFile,
-                'logStartingLine'       => $this->logStartingLine,
-                'logStartingClass'      => $this->logStartingClass,
-                'logStartingFunction'   => $this->logStartingFunction,
+        if ($this->SQLQuery) {
+            $this->SQLQuery->setCanceled();
+            $this->stopQuery();
+        }
 
-            ]
-        );
+        $this->SQLQuery = (new SQLQuery()) ->setSql($formatter->format($sql))
+                                            ->setParams($params)
+                                            ->setTypes($types)
+                                            ->setLogStartingFile($this->logStartingFile)
+                                            ->setLogStartingLine($this->logStartingLine)
+                                            ->setLogStartingClass($this->logStartingClass)
+                                            ->setLogStartingFunction($this->logStartingFunction);
     }
 
     /**
@@ -64,5 +68,21 @@ class OxidSQLLogger implements SQLLogger
      */
     public function stopQuery()
     {
+        if ($this->SQLQuery) {
+            Monolog\Registry::sql()->addDebug(
+                '['.$this->SQLQuery->getReadableElapsedTime().'] ' . ( $this->message ? $this->message : $this->SQLQuery->getSql() ),
+                [
+                    'params' => $this->SQLQuery->getParams(),
+                    'time' => $this->SQLQuery->getElapsedTime(),
+                    'types' => $this->SQLQuery->getTypes(),
+                    'logStartingFile' => $this->SQLQuery->getLogStartingFile(),
+                    'logStartingLine' => $this->SQLQuery->getLogStartingLine(),
+                    'logStartingClass' => $this->SQLQuery->getLogStartingClass(),
+                    'logStartingFunction' => $this->SQLQuery->getLogStartingFunction(),
+                ]
+            );
+        }
+
+        $this->SQLQuery = null;
     }
 }
