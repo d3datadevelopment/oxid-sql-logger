@@ -3,7 +3,8 @@
     "description": "Returns all SQL queries in the browser.",
     "type": "library",
     "require": {
-        "monolog/monolog": "^1"
+        "monolog/monolog": "^1",
+        "nilportugues/sql-query-formatter": "^1.2.2"
     },
     "license": "GPL-3.0",
     "autoload": {

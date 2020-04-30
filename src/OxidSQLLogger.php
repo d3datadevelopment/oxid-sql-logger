@@ -42,10 +42,12 @@ class OxidSQLLogger implements SQLLogger
      */
     public function startQuery($sql, array $params = null, array $types = null)
     {
+        $formatter = new Formatter();
+
         Monolog\Registry::sql()->addDebug(
             $this->message ? $this->message : $sql,
             [
-                'query'                 => $sql,
+                'query'                 => $formatter->format($sql),
                 'params'                => $params,
                 'types'                 => $types,
                 'logStartingFile'       => $this->logStartingFile,
