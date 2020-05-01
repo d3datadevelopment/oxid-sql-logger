@@ -10,7 +10,10 @@
     "autoload": {
         "psr-4": {
             "D3\\OxidSqlLogger\\": "./src"
-        }
+        },
+        "files": [
+            "./src/functions.php"
+        ]
     },
     "authors": [
         {
