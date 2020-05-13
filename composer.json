@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "monolog/monolog": "^1",
-        "nilportugues/sql-query-formatter": "^1.2.2"
+        "nilportugues/sql-query-formatter": "^1.2.2",
+        "firephp/firephp-core": "^0.5.3"
     },
     "license": "GPL-3.0",
     "autoload": {

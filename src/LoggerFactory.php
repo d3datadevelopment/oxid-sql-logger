@@ -8,6 +8,7 @@
 namespace D3\OxidSqlLogger;
 
 use Monolog;
+use OxidEsales\Eshop\Core\Registry;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 /**
@@ -29,14 +30,52 @@ class LoggerFactory
      */
     private function getHandlers()
     {
-        $handlers = [];
         if (PHP_SAPI == 'cli') {
-            $handlers[] = $this->getStreamHandler();
+            $configuredHandlers = Registry::getConfig()->getConfigParam('SqlLoggerCLIHandlers');
+
+            $handlers = (isset($configuredHandlers) && $this->is_iterable($configuredHandlers)) ?
+                $this->getInstancesFromHandlerList($configuredHandlers) :
+                [$this->getStreamHandler()];
         } else {
-            $handlers[] = $this->getBrowserConsoleHandler();
-            $handlers[] = $this->getFirePHPHandler();
+            $configuredHandlers = Registry::getConfig()->getConfigParam('SqlLoggerGUIHandlers');
+
+            $handlers = (isset($configuredHandlers) && $this->is_iterable($configuredHandlers)) ?
+                $this->getInstancesFromHandlerList($configuredHandlers) :
+                [
+                    $this->getBrowserConsoleHandler(),
+                    $this->getFirePHPHandler()
+                ];
         }
+
         return $handlers;
+    }
+
+    /**
+     * @param array $classNames
+     *
+     * @return array
+     */
+    private function getInstancesFromHandlerList(array $classNames)
+    {
+        return array_map(
+            function($className){
+                return new $className();
+            },
+            $classNames
+        );
+    }
+
+    /**
+     * polyfill for is_iterable() - available from PHP 7.1
+     * @param $obj
+     *
+     * @return bool
+     */
+    private function is_iterable($obj)
+    {
+        return function_exists('is_iterable') ?
+            is_iterable($obj) :
+            is_array($obj) || (is_object($obj) && ($obj instanceof \Traversable));
     }
 
     /**
