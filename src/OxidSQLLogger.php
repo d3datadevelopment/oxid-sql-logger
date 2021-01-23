@@ -7,6 +7,7 @@
 
 namespace D3\OxidSqlLogger;
 
+use D3\ModCfg\Application\Model\d3database;
 use Doctrine\DBAL\Logging\SQLLogger;
 use Monolog;
 use NilPortugues\Sql\QueryFormatter\Formatter;
@@ -53,6 +54,8 @@ class OxidSQLLogger implements SQLLogger
             $this->stopQuery();
         }
 
+        $this->getPreparedStatementQuery($sql, $params);
+
         $this->SQLQuery = (new SQLQuery()) ->setSql($sql)
                                             ->setParams($params)
                                             ->setTypes($types)
@@ -60,6 +63,23 @@ class OxidSQLLogger implements SQLLogger
                                             ->setLogStartingLine($this->logStartingLine)
                                             ->setLogStartingClass($this->logStartingClass)
                                             ->setLogStartingFunction($this->logStartingFunction);
+    }
+
+    /**
+     * @param string $sql
+     * @param array $params
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     */
+    public function getPreparedStatementQuery(&$sql, array $params = null)
+    {
+        if (class_exists(d3database::class)
+            && method_exists(d3database::class, 'getPreparedStatementQuery')
+            && count($params)
+            && ($query = d3database::getInstance()->getPreparedStatementQuery($sql, $params))
+            && strlen(trim($query))
+        ) {
+            $sql = $query;
+        }
     }
 
     /**
