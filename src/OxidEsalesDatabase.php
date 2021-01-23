@@ -15,7 +15,10 @@ use Doctrine\DBAL\Configuration;
  */
 class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database
 {
-    public static function enableLogger($message = null)
+    /**
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     */
+    public function d3EnableLogger($message)
     {
         $trace = debug_backtrace((PHP_VERSION_ID < 50306) ? 2 : DEBUG_BACKTRACE_IGNORE_ARGS);
 
@@ -33,17 +36,20 @@ class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrin
     }
 
     /**
-     * @return OxidSQLLogger
+     * @return mixed
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
      */
-    public static function getLogger()
+    public function d3GetLogger()
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $dbalConfig = $database->getConnection()->getConfiguration();
         return $dbalConfig->getSQLLogger();
     }
 
-    public static function disableLogger()
+    /**
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     */
+    public function d3DisableLogger()
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $dbalConfig = $database->getConnection()->getConfiguration();

@@ -6,9 +6,14 @@
  */
 
 function D3StartSQLLog($message = null) {
-    \D3\OxidSqlLogger\OxidEsalesDatabase::enableLogger($message);
+    /** @var \D3\OxidSqlLogger\OxidEsalesDatabase $database */
+    $database = oxNew(\D3\OxidSqlLogger\OxidEsalesDatabase::class);
+    $database->d3EnableLogger($message);
 }
 
-function D3StopSQLLog() {
-    \D3\OxidSqlLogger\OxidEsalesDatabase::disableLogger();
+function D3StopSQLLog()
+{
+    /** @var \D3\OxidSqlLogger\OxidEsalesDatabase $database */
+    $database = oxNew(\D3\OxidSqlLogger\OxidEsalesDatabase::class);
+    $database->d3DisableLogger();
 }
