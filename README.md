@@ -30,6 +30,33 @@ CLI:
 
 ![Example CLI](https://raw.githubusercontent.com/d3datadevelopment/oxid-sql-logger/master/img/screenshot-cli.jpg)
 
+## Configuration
+
+Add the sections to the config.inc.php of the shop if needed:
+
+```php
+$this->SqlLoggerGUIHandlers = [
+    \Monolog\Handler\BrowserConsoleHandler::class,
+    \D3\OxidSqlLogger\Handler\d3FirePHPHandler::class
+];
+```
+
+Standard handlers are BrowserConsoleHandler and d3FirePHPHandler.
+
+```php
+$this->SqlLoggerCLIHandlers = [
+    ...
+];
+```
+
+Standard handler is StreamHandler.
+
+```php
+$this->d3FirePHPOptions = [
+    \D3\OxidSqlLogger\Handler\d3FirePHPHandler::ADD_TRACE
+];
+```
+
 ## Credits
 
 Many thanks to [Tobias Matthaiou](https://github.com/TumTum/oxid-sql-logger) for his inspiration.

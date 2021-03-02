@@ -35,7 +35,9 @@ class LoggerFactory
 
             $handlers = (isset($configuredHandlers) && $this->is_iterable($configuredHandlers)) ?
                 $this->getInstancesFromHandlerList($configuredHandlers) :
-                [$this->getStreamHandler()];
+                [
+                    $this->getStreamHandler()
+                ];
         } else {
             $configuredHandlers = Registry::getConfig()->getConfigParam('SqlLoggerGUIHandlers');
 
