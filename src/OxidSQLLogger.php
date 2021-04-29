@@ -70,10 +70,11 @@ class OxidSQLLogger implements SQLLogger
      * @param array $params
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
      */
-    public function getPreparedStatementQuery(&$sql, array $params = null)
+    public function getPreparedStatementQuery(&$sql, $params = [])
     {
         if (class_exists(d3database::class)
             && method_exists(d3database::class, 'getPreparedStatementQuery')
+            && is_array($params)
             && count($params)
             && ($query = d3database::getInstance()->getPreparedStatementQuery($sql, $params))
             && strlen(trim($query))
