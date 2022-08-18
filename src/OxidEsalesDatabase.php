@@ -9,17 +9,20 @@ namespace D3\OxidSqlLogger;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Logging\SQLLogger;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 
 /**
  * Class OxidEsalesDatabase
  * Is a depenction injection Helper Class
  */
-class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database
+class OxidEsalesDatabase extends Database
 {
     /**
      * @param null $message
      *
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws DatabaseConnectionException
      * @deprecated use non static d3EnableLogger method or D3StartSQLLog function
      */
     public static function enableLogger($message = null)
@@ -29,21 +32,21 @@ class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrin
     }
 
     /**
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws DatabaseConnectionException
      */
     public function d3EnableLogger($message)
     {
         $trace = debug_backtrace((PHP_VERSION_ID < 50306) ? 2 : DEBUG_BACKTRACE_IGNORE_ARGS);
 
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb( DatabaseProvider::FETCH_MODE_ASSOC);
         /** @var Configuration $dbalConfig */
         $dbalConfig = $database->getConnection()->getConfiguration();
         $dbalConfig->setSQLLogger(
             new OxidSQLLogger(
-                isset($trace[1]['file']) ? $trace[1]['file'] : null,
-                isset($trace[1]['line']) ? $trace[1]['line'] : null,
-                isset($trace[2]['class']) ? $trace[2]['class'] : null,
-                isset($trace[2]['function']) ? $trace[2]['function'] : null,
+                $trace[1]['file'] ?? null,
+                $trace[1]['line'] ?? null,
+                $trace[2]['class'] ?? null,
+                $trace[2]['function'] ?? null,
                 $message
             )
         );
@@ -51,7 +54,7 @@ class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrin
 
     /**
      * @return SQLLogger|null
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws DatabaseConnectionException
      * @deprecated use non static d3GetLogger method
      */
     public static function getLogger()
@@ -62,18 +65,18 @@ class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrin
 
     /**
      * @return SQLLogger|null
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws DatabaseConnectionException
      */
     public function d3GetLogger()
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb( DatabaseProvider::FETCH_MODE_ASSOC);
         /** @var Configuration $dbalConfig */
         $dbalConfig = $database->getConnection()->getConfiguration();
         return $dbalConfig->getSQLLogger();
     }
 
     /**
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws DatabaseConnectionException
      * @deprecated use non static d3DisableLogger method or D3StopSQLLog function
      */
     public static function disableLogger()
@@ -83,13 +86,13 @@ class OxidEsalesDatabase extends \OxidEsales\Eshop\Core\Database\Adapter\Doctrin
     }
 
     /**
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws DatabaseConnectionException
      */
     public function d3DisableLogger()
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb( DatabaseProvider::FETCH_MODE_ASSOC);
         /** @var Configuration $dbalConfig */
         $dbalConfig = $database->getConnection()->getConfiguration();
-        $dbalConfig->setSQLLogger(null);
+        $dbalConfig->setSQLLogger();
     }
 }

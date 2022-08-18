@@ -16,15 +16,22 @@
 namespace D3\OxidSqlLogger\Handler;
 
 use D3\OxidSqlLogger\Extensions\d3FirePHP;
+use Exception;
+use Monolog\Handler\AbstractProcessingHandler;
 use OxidEsales\Eshop\Core\Registry;
 
-class d3FirePHPHandler extends \Monolog\Handler\AbstractProcessingHandler
+class d3FirePHPHandler extends AbstractProcessingHandler
 {
     const ADD_TRACE = 'addTrace';
-    
+
+    /**
+     * @param array $record
+     *
+     * @throws Exception
+     */
     protected function write(array $record): void
     {
-        $options = Registry::getConfig()->getConfigParam(d3FirePHPOptions);
+        $options = Registry::getConfig()->getConfigParam('d3FirePHPOptions');
         $options = isset($options) && is_array($options) ? $options : [];
 
         $fp = d3FirePHP::getInstance(true);
@@ -36,7 +43,7 @@ class d3FirePHPHandler extends \Monolog\Handler\AbstractProcessingHandler
         $fp->log( $record['formatted'], $record['message']);
 
         if (in_array(self::ADD_TRACE, $options)) {
-            $fp->trace( 'trace', 'trace' );
+            $fp->trace( 'trace');
             $fp->groupEnd();
         }
     }

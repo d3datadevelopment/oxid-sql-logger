@@ -16,7 +16,7 @@ class SQLQuery
     /**
      * @var float|null
      */
-    private $start_time = null;
+    private $start_time;
 
     /**
      * @var float|null
@@ -46,9 +46,6 @@ class SQLQuery
     
     private $logStartingFunction;
 
-    /**
-     * @inheritDoc
-     */
     public function __construct()
     {
         $this->start_time = microtime(true);
@@ -224,6 +221,7 @@ class SQLQuery
      *
      * @param  float $microtime
      * @param  string  $format   The format to display (printf format)
+     * @param int $round
      * @return string
      */
     private function readableElapsedTime($microtime, $format = '%.3f%s', $round = 3)

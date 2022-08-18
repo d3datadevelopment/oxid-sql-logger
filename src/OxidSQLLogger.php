@@ -11,6 +11,7 @@ use D3\ModCfg\Application\Model\d3database;
 use Doctrine\DBAL\Logging\SQLLogger;
 use Monolog;
 use NilPortugues\Sql\QueryFormatter\Formatter;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 
 /**
  * Class OxidSQLLogger
@@ -29,7 +30,11 @@ class OxidSQLLogger implements SQLLogger
     private $SQLQuery = null;
 
     /**
-     * @inheritDoc
+     * @param      $file
+     * @param      $line
+     * @param      $class
+     * @param      $function
+     * @param null $message
      */
     public function __construct($file, $line, $class, $function, $message = null)
     {
@@ -45,7 +50,11 @@ class OxidSQLLogger implements SQLLogger
     }
 
     /**
-     * @inheritDoc
+     * @param string     $sql
+     * @param array|null $params
+     * @param array|null $types
+     *
+     * @throws DatabaseConnectionException
      */
     public function startQuery($sql, array $params = null, array $types = null)
     {
@@ -68,9 +77,9 @@ class OxidSQLLogger implements SQLLogger
     /**
      * @param string $sql
      * @param array $params
-     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     * @throws DatabaseConnectionException
      */
-    public function getPreparedStatementQuery(&$sql, $params = [])
+    public function getPreparedStatementQuery(&$sql, array $params = [])
     {
         if (class_exists(d3database::class)
             && method_exists(d3database::class, 'getPreparedStatementQuery')
@@ -92,7 +101,7 @@ class OxidSQLLogger implements SQLLogger
             $formatter = new Formatter();
 
             Monolog\Registry::sql()->addDebug(
-                '['.$this->SQLQuery->getReadableElapsedTime().'] ' . ( $this->message ? $this->message : $this->SQLQuery->getSql() ),
+                '['.$this->SQLQuery->getReadableElapsedTime().'] ' . ( $this->message ?: $this->SQLQuery->getSql() ),
                 [
                     'query' => $formatter->format($this->SQLQuery->getSql()),
                     'params' => $this->SQLQuery->getParams(),

@@ -10,6 +10,7 @@ namespace D3\OxidSqlLogger;
 use Monolog;
 use OxidEsales\Eshop\Core\Registry;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Traversable;
 
 /**
  * Class Factory
@@ -77,7 +78,7 @@ class LoggerFactory
     {
         return function_exists('is_iterable') ?
             is_iterable($obj) :
-            is_array($obj) || (is_object($obj) && ($obj instanceof \Traversable));
+            is_array($obj) || ( $obj instanceof Traversable);
     }
 
     /**
@@ -93,7 +94,7 @@ class LoggerFactory
         $context    = (new OutputFormatterStyle('yellow'))->apply('%context%');
         $newline    = PHP_EOL . str_repeat(' ', 10);
 
-        $ttl_color = "$channel $level_name: $message {$newline} $context {$newline} %extra%" . PHP_EOL;
+        $ttl_color = "$channel $level_name: $message $newline $context $newline %extra%" . PHP_EOL;
 
         $streamHandler->setFormatter(
             new Monolog\Formatter\LineFormatter(
