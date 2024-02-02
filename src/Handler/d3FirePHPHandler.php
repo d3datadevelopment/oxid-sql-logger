@@ -22,7 +22,7 @@ use OxidEsales\Eshop\Core\Registry;
 
 class d3FirePHPHandler extends AbstractProcessingHandler
 {
-    const ADD_TRACE = 'addTrace';
+    public const ADD_TRACE = 'addTrace';
 
     /**
      * @param array $record
@@ -37,13 +37,13 @@ class d3FirePHPHandler extends AbstractProcessingHandler
         $fp = d3FirePHP::getInstance(true);
 
         if (in_array(self::ADD_TRACE, $options)) {
-            $fp->group( $record['message'], [ 'Collapsed' => true ] );
+            $fp->group($record['message'], [ 'Collapsed' => true ]);
         }
 
-        $fp->log( $record['formatted'], $record['message']);
+        $fp->log($record['formatted'], $record['message']);
 
         if (in_array(self::ADD_TRACE, $options)) {
-            $fp->trace( 'trace');
+            $fp->trace('trace');
             $fp->groupEnd();
         }
     }

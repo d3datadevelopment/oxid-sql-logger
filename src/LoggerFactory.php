@@ -37,7 +37,7 @@ class LoggerFactory
             $handlers = (isset($configuredHandlers) && is_iterable($configuredHandlers)) ?
                 $this->getInstancesFromHandlerList($configuredHandlers) :
                 [
-                    $this->getStreamHandler()
+                    $this->getStreamHandler(),
                 ];
         } else {
             $configuredHandlers = Registry::getConfig()->getConfigParam('SqlLoggerGUIHandlers');
@@ -46,7 +46,7 @@ class LoggerFactory
                 $this->getInstancesFromHandlerList($configuredHandlers) :
                 [
                     $this->getBrowserConsoleHandler(),
-                    $this->getFirePHPHandler()
+                    $this->getFirePHPHandler(),
                 ];
         }
 
@@ -61,7 +61,7 @@ class LoggerFactory
     private function getInstancesFromHandlerList(iterable $classNames): array
     {
         return array_map(
-            function($className){
+            function ($className) {
                 return new $className();
             },
             (array) $classNames
@@ -122,7 +122,7 @@ class LoggerFactory
                 [
                     'D3\\OxidSqlLogger',
                     'Doctrine\\DBAL\\Connection',
-                    'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database'
+                    'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database',
                 ]
             ),
             new Monolog\Processor\PsrLogMessageProcessor(),

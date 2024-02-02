@@ -73,8 +73,8 @@ class d3FirePHP extends FirePHP
      */
     public function trace($label): bool
     {
-        return $this->fb($label, $label, FirePHP::TRACE, array(
-            'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)
-        ));
+        return $this->fb($label, $label, FirePHP::TRACE, [
+            'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS),
+        ]);
     }
 }

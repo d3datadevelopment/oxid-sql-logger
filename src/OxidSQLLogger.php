@@ -56,7 +56,7 @@ class OxidSQLLogger implements SQLLogger
             $this->stopQuery();
         }
 
-        $this->getPreparedStatementQuery( $sql, $params ?? [], $types ?? []);
+        $this->getPreparedStatementQuery($sql, $params ?? [], $types ?? []);
 
         $this->SQLQuery = (new SQLQuery())->setSql($sql)
             ->setParams($params)

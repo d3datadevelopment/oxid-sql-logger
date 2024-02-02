@@ -29,13 +29,13 @@ class SQLQuery
     private ?array $parameters = null;
 
     private ?array $parameterTypes = null;
-    
+
     private string $logStartingFile;
-    
+
     private int $logStartingLine;
-    
+
     private string $logStartingClass;
-    
+
     private string $logStartingFunction;
 
     public function __construct()
@@ -98,7 +98,7 @@ class SQLQuery
         $this->parameterTypes = $types;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -106,7 +106,7 @@ class SQLQuery
     {
         return $this->logStartingFile;
     }
-    
+
     /**
      * @param string $file
      * @return static

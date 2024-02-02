@@ -20,7 +20,7 @@ use Psr\Container\NotFoundExceptionInterface;
 function D3StartSQLLog(string $message = null): void
 {
     /** @var OxidEsalesDatabase $database */
-    $database = oxNew( OxidEsalesDatabase::class);
+    $database = oxNew(OxidEsalesDatabase::class);
     $database->d3EnableLogger($message);
 }
 
@@ -31,7 +31,7 @@ function D3StartSQLLog(string $message = null): void
 function D3StopSQLLog(): void
 {
     /** @var OxidEsalesDatabase $database */
-    $database = oxNew( OxidEsalesDatabase::class);
+    $database = oxNew(OxidEsalesDatabase::class);
     $database->d3DisableLogger();
 }
 
@@ -44,9 +44,9 @@ function D3StopSQLLog(): void
 function D3AddSQLLogItem(string $message): void
 {
     /** @var OxidEsalesDatabase $database */
-    $database = oxNew( OxidEsalesDatabase::class);
+    $database = oxNew(OxidEsalesDatabase::class);
     if ($logger = $database->d3GetLogger()) {
-        $logger->startQuery( $message );
+        $logger->startQuery($message);
         $logger->stopQuery();
     }
 }
