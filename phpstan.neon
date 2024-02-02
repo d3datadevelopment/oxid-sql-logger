@@ -1,0 +1,14 @@
+parameters:
+    scanFiles:
+        - ../../oxid-esales/oxideshop-ce/source/bootstrap.php
+        - ../../oxid-esales/oxideshop-ce/source/oxfunctions.php
+        - ../../oxid-esales/oxideshop-ce/source/overridablefunctions.php
+    paths:
+        - ./src
+        - ./example
+    level: 9
+    phpVersion: 80300
+    checkMissingIterableValueType: false
+    treatPhpDocTypesAsCertain: false
+    featureToggles:
+        disableRuntimeReflectionProvider: true

@@ -8,6 +8,9 @@
         "nilportugues/sql-query-formatter": "^1.2.2",
         "firephp/firephp-core": "^0.5.3"
     },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10"
+    },
     "license": "GPL-3.0",
     "autoload": {
         "psr-4": {
@@ -27,5 +30,8 @@
             "email": "info@shopmodule.com",
             "homepage": "https://www.d3data.de"
         }
-    ]
+    ],
+    "scripts": {
+        "phpstan": "./vendor/bin/phpstan --configuration=vendor/d3/oxid-sql-logger/phpstan.neon analyse"
+    }
 }

@@ -37,7 +37,7 @@ class OxidSQLLogger implements SQLLogger
             Monolog\Registry::addLogger((new LoggerFactory())->create('sql'));
         }
 
-        $this->message              = $message;
+        $this->message              = (string) $message;
         $this->logStartingFile      = $file;
         $this->logStartingLine      = $line;
         $this->logStartingClass     = $class;
@@ -92,6 +92,7 @@ class OxidSQLLogger implements SQLLogger
         if ($this->SQLQuery) {
             $formatter = new Formatter();
 
+            // @phpstan-ignore-next-line
             Monolog\Registry::sql()->addDebug(
                 '['.$this->SQLQuery->getReadableElapsedTime().'] ' . ($this->message ?: $this->SQLQuery->getSql()),
                 [

@@ -68,7 +68,7 @@ class d3FirePHP extends FirePHP
      *
      * @see FirePHP::TRACE
      * @param string $label
-     * @return true
+     * @return bool
      * @throws Exception
      */
     public function trace($label): bool

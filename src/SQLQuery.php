@@ -53,7 +53,7 @@ class SQLQuery
 
     /**
      * @param string $sql
-     * @return SQLQuery
+     * @return static
      */
     public function setSql(string $sql): static
     {
@@ -72,7 +72,7 @@ class SQLQuery
     /**
      * @param array|null $params
      *
-     * @return SQLQuery
+     * @return static
      */
     public function setParams(array $params = null): static
     {
@@ -91,7 +91,7 @@ class SQLQuery
     /**
      * @param array|null $types
      *
-     * @return SQLQuery
+     * @return static
      */
     public function setTypes(array $types = null): static
     {
@@ -109,7 +109,7 @@ class SQLQuery
     
     /**
      * @param string $file
-     * @return SQLQuery
+     * @return static
      */
     public function setLogStartingFile(string $file): static
     {
@@ -125,7 +125,7 @@ class SQLQuery
     /**
      * @param int $line
      *
-     * @return SQLQuery
+     * @return static
      */
     public function setLogStartingLine(int $line): static
     {
@@ -144,7 +144,7 @@ class SQLQuery
     /**
      * @param string $classname
      *
-     * @return SQLQuery
+     * @return static
      */
     public function setLogStartingClass(string $classname): static
     {
@@ -163,7 +163,7 @@ class SQLQuery
     /**
      * @param string $functionname
      *
-     * @return SQLQuery
+     * @return static
      */
     public function setLogStartingFunction(string $functionname): static
     {
@@ -174,7 +174,7 @@ class SQLQuery
     /**
      * Statement was cancelled prematurely, an error was thrown.
      *
-     * @return SQLQuery
+     * @return static
      */
     public function setCanceled(): static
     {
@@ -227,7 +227,7 @@ class SQLQuery
             $unit = 'ms';
             $time = round($microtime*1000);
 
-            $format = preg_replace('/(%.\d+f)/', '%d', $format);
+            $format = (string) preg_replace('/(%.\d+f)/', '%d', $format);
         }
 
         return sprintf($format, $time, $unit);

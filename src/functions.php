@@ -36,15 +36,17 @@ function D3StopSQLLog(): void
 }
 
 /**
- * @param $message
+ * @param string $message
  *
  * @throws ContainerExceptionInterface
  * @throws NotFoundExceptionInterface
  */
-function D3AddSQLLogItem($message): void
+function D3AddSQLLogItem(string $message): void
 {
     /** @var OxidEsalesDatabase $database */
     $database = oxNew( OxidEsalesDatabase::class);
-    $database->d3GetLogger()->startQuery($message);
-    $database->d3GetLogger()->stopQuery();
+    if ($logger = $database->d3GetLogger()) {
+        $logger->startQuery( $message );
+        $logger->stopQuery();
+    }
 }

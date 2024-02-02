@@ -10,16 +10,18 @@ declare(strict_types=1);
 namespace D3\OxidSqlLogger;
 
 use Monolog;
+use Monolog\Logger;
 use OxidEsales\Eshop\Core\Registry;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class LoggerFactory
 {
     /**
-     * @param $name
-     * @return Monolog\Logger
+     * @param string $name
+     *
+     * @return Logger
      */
-    public function create($name): Monolog\Logger
+    public function create(string $name): Monolog\Logger
     {
         return new Monolog\Logger($name, $this->getHandlers(), $this->getProcessors());
     }
@@ -52,17 +54,17 @@ class LoggerFactory
     }
 
     /**
-     * @param array $classNames
+     * @param iterable $classNames
      *
      * @return array
      */
-    private function getInstancesFromHandlerList(array $classNames): array
+    private function getInstancesFromHandlerList(iterable $classNames): array
     {
         return array_map(
             function($className){
                 return new $className();
             },
-            $classNames
+            (array) $classNames
         );
     }
 

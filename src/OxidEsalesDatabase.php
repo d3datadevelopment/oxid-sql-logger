@@ -13,6 +13,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Logging\SQLLogger;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProviderInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -32,10 +33,10 @@ class OxidEsalesDatabase extends Database
 
         $this->d3GetConfiguration()->setSQLLogger(
             new OxidSQLLogger(
-                $trace[1]['file'] ?? null,
-                (int) $trace[1]['line'] ?? null,
-                $trace[2]['class'] ?? null,
-                $trace[2]['function'] ?? null,
+                $trace[1]['file'] ?? '',
+                array_key_exists('line', $trace[1]) ? (int) $trace[1]['line'] : 0,
+                $trace[2]['class'] ?? '',
+                $trace[2]['function'] ?? '',
                 $message
             )
         );
@@ -61,13 +62,15 @@ class OxidEsalesDatabase extends Database
     }
 
     /**
-     * @return Configuration|null
+     * @return Configuration
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function d3GetConfiguration(): ?Configuration
+    protected function d3GetConfiguration(): Configuration
     {
-        return ContainerFactory::getInstance()->getContainer()
-                        ->get(ConnectionProviderInterface::class)->get()->getConfiguration();
+        /** @var ConnectionProvider $connectionProvider */
+        $connectionProvider = ContainerFactory::getInstance()->getContainer()
+                                              ->get(ConnectionProviderInterface::class);
+        return $connectionProvider->get()->getConfiguration();
     }
 }
