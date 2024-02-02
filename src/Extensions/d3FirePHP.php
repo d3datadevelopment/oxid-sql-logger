@@ -1,17 +1,17 @@
 <?php
 
 /**
- * This Software is the property of Data Development and is protected
- * by copyright law - it is NOT Freeware.
- * Any unauthorized use of this software without a valid license
- * is a violation of the license agreement and will be prosecuted by
- * civil and criminal law.
- * http://www.shopmodule.com
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * https://www.d3data.de
  *
  * @copyright (C) D3 Data Development (Inh. Thomas Dartsch)
- * @author        D3 Data Development - Daniel Seifert <support@shopmodule.com>
- * @link          http://www.oxidmodule.com
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
+ * @link      https://www.oxidmodule.com
  */
+
+declare(strict_types=1);
 
 namespace D3\OxidSqlLogger\Extensions;
 
@@ -32,7 +32,7 @@ class d3FirePHP extends FirePHP
      * @param boolean $autoCreate
      * @return FirePHP
      */
-    public static function getInstance($autoCreate = false)
+    public static function getInstance($autoCreate = false): FirePHP
     {
         if ($autoCreate === true && !self::$instance) {
             self::init();
@@ -45,7 +45,7 @@ class d3FirePHP extends FirePHP
      *
      * @return FirePHP
      */
-    public static function init()
+    public static function init(): FirePHP
     {
         return self::setInstance(new self());
     }
@@ -71,7 +71,7 @@ class d3FirePHP extends FirePHP
      * @return true
      * @throws Exception
      */
-    public function trace($label)
+    public function trace($label): bool
     {
         return $this->fb($label, $label, FirePHP::TRACE, array(
             'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)

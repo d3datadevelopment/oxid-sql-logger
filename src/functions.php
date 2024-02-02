@@ -1,28 +1,34 @@
 <?php
 
-use D3\OxidSqlLogger\OxidEsalesDatabase;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-
 /**
  * @author    Tobias Matthaiou <developer@tobimat.eu>
  * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
 
+declare(strict_types=1);
+
+use D3\OxidSqlLogger\OxidEsalesDatabase;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+
 /**
- * @param string $message
+ * @param string|null $message
  *
- * @throws DatabaseConnectionException
+ * @throws ContainerExceptionInterface
+ * @throws NotFoundExceptionInterface
  */
-function D3StartSQLLog($message = null) {
+function D3StartSQLLog(string $message = null): void
+{
     /** @var OxidEsalesDatabase $database */
     $database = oxNew( OxidEsalesDatabase::class);
     $database->d3EnableLogger($message);
 }
 
 /**
- * @throws DatabaseConnectionException
+ * @throws ContainerExceptionInterface
+ * @throws NotFoundExceptionInterface
  */
-function D3StopSQLLog()
+function D3StopSQLLog(): void
 {
     /** @var OxidEsalesDatabase $database */
     $database = oxNew( OxidEsalesDatabase::class);
@@ -32,9 +38,10 @@ function D3StopSQLLog()
 /**
  * @param $message
  *
- * @throws DatabaseConnectionException
+ * @throws ContainerExceptionInterface
+ * @throws NotFoundExceptionInterface
  */
-function D3AddSQLLogItem($message)
+function D3AddSQLLogItem($message): void
 {
     /** @var OxidEsalesDatabase $database */
     $database = oxNew( OxidEsalesDatabase::class);

@@ -5,44 +5,39 @@
  * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
 
+declare(strict_types=1);
+
 namespace D3\OxidSqlLogger;
 
 use D3\ModCfg\Application\Model\d3database;
 use Doctrine\DBAL\Logging\SQLLogger;
 use Monolog;
 use NilPortugues\Sql\QueryFormatter\Formatter;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 
-/**
- * Class OxidSQLLogger
- */
 class OxidSQLLogger implements SQLLogger
 {
-    public $message;
-    public $logStartingFile;
-    public $logStartingLine;
-    public $logStartingClass;
-    public $logStartingFunction;
+    public string $message;
+    public string $logStartingFile;
+    public int $logStartingLine;
+    public string $logStartingClass;
+    public string $logStartingFunction;
+
+    private SQLQuery|null $SQLQuery = null;
 
     /**
-     * @var SQLQuery
+     * @param string      $file
+     * @param int         $line
+     * @param string      $class
+     * @param string      $function
+     * @param string|null $message
      */
-    private $SQLQuery = null;
-
-    /**
-     * @param      $file
-     * @param      $line
-     * @param      $class
-     * @param      $function
-     * @param null $message
-     */
-    public function __construct($file, $line, $class, $function, $message = null)
+    public function __construct(string $file, int $line, string $class, string $function, string $message = null)
     {
         if (!Monolog\Registry::hasLogger('sql')) {
             Monolog\Registry::addLogger((new LoggerFactory())->create('sql'));
         }
 
-        $this->message             = $message;
+        $this->message              = $message;
         $this->logStartingFile      = $file;
         $this->logStartingLine      = $line;
         $this->logStartingClass     = $class;
@@ -53,39 +48,36 @@ class OxidSQLLogger implements SQLLogger
      * @param string     $sql
      * @param array|null $params
      * @param array|null $types
-     *
-     * @throws DatabaseConnectionException
      */
-    public function startQuery($sql, array $params = null, array $types = null)
+    public function startQuery($sql, ?array $params = null, ?array $types = null): void
     {
         if ($this->SQLQuery) {
             $this->SQLQuery->setCanceled();
             $this->stopQuery();
         }
 
-        $this->getPreparedStatementQuery($sql, $params ?? []);
+        $this->getPreparedStatementQuery( $sql, $params ?? [], $types ?? []);
 
-        $this->SQLQuery = (new SQLQuery()) ->setSql($sql)
-                                            ->setParams($params)
-                                            ->setTypes($types)
-                                            ->setLogStartingFile($this->logStartingFile)
-                                            ->setLogStartingLine($this->logStartingLine)
-                                            ->setLogStartingClass($this->logStartingClass)
-                                            ->setLogStartingFunction($this->logStartingFunction);
+        $this->SQLQuery = (new SQLQuery())->setSql($sql)
+            ->setParams($params)
+            ->setTypes($types)
+            ->setLogStartingFile($this->logStartingFile)
+            ->setLogStartingLine($this->logStartingLine)
+            ->setLogStartingClass($this->logStartingClass)
+            ->setLogStartingFunction($this->logStartingFunction);
     }
 
     /**
      * @param string $sql
-     * @param array $params
-     * @throws DatabaseConnectionException
+     * @param array  $params
+     * @param array  $types
      */
-    public function getPreparedStatementQuery(&$sql, array $params = [])
+    public function getPreparedStatementQuery(string &$sql, array $params = [], array $types = []): void
     {
         if (class_exists(d3database::class)
             && method_exists(d3database::class, 'getPreparedStatementQuery')
-            && is_array($params)
             && count($params)
-            && ($query = d3database::getInstance()->getPreparedStatementQuery($sql, $params))
+            && ($query = d3database::getInstance()->getPreparedStatementQuery($sql, $params, $types))
             && strlen(trim($query))
         ) {
             $sql = $query;
@@ -95,13 +87,13 @@ class OxidSQLLogger implements SQLLogger
     /**
      * @inheritDoc
      */
-    public function stopQuery()
+    public function stopQuery(): void
     {
         if ($this->SQLQuery) {
             $formatter = new Formatter();
 
             Monolog\Registry::sql()->addDebug(
-                '['.$this->SQLQuery->getReadableElapsedTime().'] ' . ( $this->message ?: $this->SQLQuery->getSql() ),
+                '['.$this->SQLQuery->getReadableElapsedTime().'] ' . ($this->message ?: $this->SQLQuery->getSql()),
                 [
                     'query' => $formatter->format($this->SQLQuery->getSql()),
                     'params' => $this->SQLQuery->getParams(),

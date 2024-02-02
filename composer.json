@@ -3,6 +3,7 @@
     "description": "Returns all SQL queries in the browser.",
     "type": "library",
     "require": {
+        "php": "^8.0",
         "monolog/monolog": "^1",
         "nilportugues/sql-query-formatter": "^1.2.2",
         "firephp/firephp-core": "^0.5.3"

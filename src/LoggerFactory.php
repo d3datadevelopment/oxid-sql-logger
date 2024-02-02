@@ -5,23 +5,21 @@
  * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
 
+declare(strict_types=1);
+
 namespace D3\OxidSqlLogger;
 
 use Monolog;
 use OxidEsales\Eshop\Core\Registry;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Traversable;
 
-/**
- * Class Factory
- */
 class LoggerFactory
 {
     /**
      * @param $name
      * @return Monolog\Logger
      */
-    public function create($name)
+    public function create($name): Monolog\Logger
     {
         return new Monolog\Logger($name, $this->getHandlers(), $this->getProcessors());
     }
@@ -29,12 +27,12 @@ class LoggerFactory
     /**
      * @return array
      */
-    private function getHandlers()
+    private function getHandlers(): array
     {
         if (PHP_SAPI == 'cli') {
             $configuredHandlers = Registry::getConfig()->getConfigParam('SqlLoggerCLIHandlers');
 
-            $handlers = (isset($configuredHandlers) && $this->is_iterable($configuredHandlers)) ?
+            $handlers = (isset($configuredHandlers) && is_iterable($configuredHandlers)) ?
                 $this->getInstancesFromHandlerList($configuredHandlers) :
                 [
                     $this->getStreamHandler()
@@ -42,7 +40,7 @@ class LoggerFactory
         } else {
             $configuredHandlers = Registry::getConfig()->getConfigParam('SqlLoggerGUIHandlers');
 
-            $handlers = (isset($configuredHandlers) && $this->is_iterable($configuredHandlers)) ?
+            $handlers = (isset($configuredHandlers) && is_iterable($configuredHandlers)) ?
                 $this->getInstancesFromHandlerList($configuredHandlers) :
                 [
                     $this->getBrowserConsoleHandler(),
@@ -58,7 +56,7 @@ class LoggerFactory
      *
      * @return array
      */
-    private function getInstancesFromHandlerList(array $classNames)
+    private function getInstancesFromHandlerList(array $classNames): array
     {
         return array_map(
             function($className){
@@ -69,22 +67,9 @@ class LoggerFactory
     }
 
     /**
-     * polyfill for is_iterable() - available from PHP 7.1
-     * @param $obj
-     *
-     * @return bool
-     */
-    private function is_iterable($obj)
-    {
-        return function_exists('is_iterable') ?
-            is_iterable($obj) :
-            is_array($obj) || ( $obj instanceof Traversable);
-    }
-
-    /**
      * @return Monolog\Handler\StreamHandler
      */
-    private function getStreamHandler()
+    private function getStreamHandler(): Monolog\Handler\StreamHandler
     {
         $streamHandler = new Monolog\Handler\StreamHandler('php://stderr');
 
@@ -111,7 +96,7 @@ class LoggerFactory
     /**
      * @return Monolog\Handler\BrowserConsoleHandler
      */
-    private function getBrowserConsoleHandler()
+    private function getBrowserConsoleHandler(): Monolog\Handler\BrowserConsoleHandler
     {
         return new Monolog\Handler\BrowserConsoleHandler();
     }
@@ -119,7 +104,7 @@ class LoggerFactory
     /**
      * @return Monolog\Handler\FirePHPHandler
      */
-    private function getFirePHPHandler()
+    private function getFirePHPHandler(): Monolog\Handler\FirePHPHandler
     {
         return new Monolog\Handler\FirePHPHandler();
     }
@@ -127,10 +112,17 @@ class LoggerFactory
     /**
      * @return array
      */
-    private function getProcessors()
+    private function getProcessors(): array
     {
         return [
-            new Monolog\Processor\IntrospectionProcessor(Monolog\Logger::DEBUG, ['D3\\OxidSqlLogger', 'Doctrine\\DBAL\\Connection', 'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database']),
+            new Monolog\Processor\IntrospectionProcessor(
+                Monolog\Logger::DEBUG,
+                [
+                    'D3\\OxidSqlLogger',
+                    'Doctrine\\DBAL\\Connection',
+                    'OxidEsales\\EshopCommunity\\Core\\Database\\Adapter\\Doctrine\\Database'
+                ]
+            ),
             new Monolog\Processor\PsrLogMessageProcessor(),
         ];
     }

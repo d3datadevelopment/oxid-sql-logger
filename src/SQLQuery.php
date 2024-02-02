@@ -1,50 +1,42 @@
 <?php
+
 /**
- * Autor: Tobias Matthaiou <developer@tobimat.eu>
- * Date: 2019-08-20
- * Time: 21:56
+ * @author    Tobias Matthaiou <developer@tobimat.eu>
+ * @author    D3 Data Development - Daniel Seifert <support@shopmodule.com>
  */
+
+declare(strict_types=1);
 
 namespace D3\OxidSqlLogger;
 
-/**
- * Class SQLQuery
- * @package tm\oxid\sql\logger
- */
 class SQLQuery
 {
     /**
-     * @var float|null
+     * @var float
      */
-    private $start_time;
+    private float $start_time;
 
     /**
-     * @var float|null
+     * @var float
      */
-    private $stop_time = null;
+    private float $stop_time = 0.0;
 
     /**
      * @var string
      */
-    private $sql = '';
+    private string $sql = '';
 
-    /**
-     * @var null
-     */
-    private $params = null;
+    private ?array $parameters = null;
 
-    /**
-     * @var null
-     */
-    private $types = null;
+    private ?array $parameterTypes = null;
     
-    private $logStartingFile;
+    private string $logStartingFile;
     
-    private $logStartingLine;
+    private int $logStartingLine;
     
-    private $logStartingClass;
+    private string $logStartingClass;
     
-    private $logStartingFunction;
+    private string $logStartingFunction;
 
     public function __construct()
     {
@@ -54,7 +46,7 @@ class SQLQuery
     /**
      * @return string
      */
-    public function getSql()
+    public function getSql(): string
     {
         return $this->sql;
     }
@@ -63,79 +55,79 @@ class SQLQuery
      * @param string $sql
      * @return SQLQuery
      */
-    public function setSql($sql)
+    public function setSql(string $sql): static
     {
         $this->sql = $sql;
         return $this;
     }
 
     /**
-     * @return null
+     * @return array|null
      */
-    public function getParams()
+    public function getParams(): ?array
     {
-        return $this->params;
+        return $this->parameters;
     }
 
     /**
-     * @param null $params
+     * @param array|null $params
+     *
      * @return SQLQuery
      */
-    public function setParams($params)
+    public function setParams(array $params = null): static
     {
-        $this->params = $params;
+        $this->parameters = $params;
         return $this;
     }
 
     /**
-     * @return null
+     * @return array|null
      */
-    public function getTypes()
+    public function getTypes(): ?array
     {
-        return $this->types;
+        return $this->parameterTypes;
     }
 
     /**
-     * @param null $types
+     * @param array|null $types
+     *
      * @return SQLQuery
      */
-    public function setTypes($types)
+    public function setTypes(array $types = null): static
     {
-        $this->types = $types;
+        $this->parameterTypes = $types;
         return $this;
     }
     
     /**
      * @return string
      */
-    public function getLogStartingFile()
+    public function getLogStartingFile(): string
     {
         return $this->logStartingFile;
     }
     
     /**
-     * @param $file
+     * @param string $file
      * @return SQLQuery
      */
-    public function setLogStartingFile($file)
+    public function setLogStartingFile(string $file): static
     {
         $this->logStartingFile = $file;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLogStartingLine()
+    public function getLogStartingLine(): int
     {
         return $this->logStartingLine;
     }
-    
+
     /**
-     * @param $line
+     * @param int $line
+     *
      * @return SQLQuery
      */
-    public function setLogStartingLine($line)
+    public function setLogStartingLine(int $line): static
     {
         $this->logStartingLine = $line;
         return $this;
@@ -144,16 +136,17 @@ class SQLQuery
     /**
      * @return string
      */
-    public function getLogStartingClass()
+    public function getLogStartingClass(): string
     {
         return $this->logStartingClass;
     }
-    
+
     /**
-     * @param $classname
+     * @param string $classname
+     *
      * @return SQLQuery
      */
-    public function setLogStartingClass($classname)
+    public function setLogStartingClass(string $classname): static
     {
         $this->logStartingClass = $classname;
         return $this;
@@ -162,16 +155,17 @@ class SQLQuery
     /**
      * @return string
      */
-    public function getLogStartingFunction()
+    public function getLogStartingFunction(): string
     {
         return $this->logStartingFunction;
     }
-    
+
     /**
-     * @param $functionname
+     * @param string $functionname
+     *
      * @return SQLQuery
      */
-    public function setLogStartingFunction($functionname)
+    public function setLogStartingFunction(string $functionname): static
     {
         $this->logStartingFunction = $functionname;
         return $this;
@@ -180,25 +174,25 @@ class SQLQuery
     /**
      * Statement was cancelled prematurely, an error was thrown.
      *
-     * @return $this
+     * @return SQLQuery
      */
-    public function setCanceled()
+    public function setCanceled(): static
     {
-        $this->start_time = null;
+        $this->start_time = 0.0;
         return $this;
     }
 
     /**
-     * Returns elapsed time
-     * @return float|string
+     * Return elapsed time
+     * @return float
      */
-    public function getElapsedTime()
+    public function getElapsedTime(): float
     {
-        if ($this->start_time === null) {
-            return 'Statement canceled';
+        if ($this->start_time === 0.0) {
+            return 0.0;
         }
 
-        if ($this->stop_time === null) {
+        if ($this->stop_time === 0.0) {
             $end_time = microtime(true);
             $this->stop_time = $end_time - $this->start_time;
         }
@@ -207,29 +201,25 @@ class SQLQuery
     }
 
     /**
-     * Returns a human readable elapsed time
+     * Returns a human-readable elapsed time
      *
      * @return string
      */
-    public function getReadableElapsedTime()
+    public function getReadableElapsedTime(): string
     {
         return $this->readableElapsedTime($this->getElapsedTime());
     }
 
     /**
-     * Returns a human readable elapsed time
+     * Returns a human-readable elapsed time
      *
      * @param  float $microtime
      * @param  string  $format   The format to display (printf format)
      * @param int $round
      * @return string
      */
-    private function readableElapsedTime($microtime, $format = '%.3f%s', $round = 3)
+    protected function readableElapsedTime(float $microtime, string $format = '%.3f%s', int $round = 3): string
     {
-        if (is_string($microtime)) {
-            return $microtime;
-        }
-
         if ($microtime >= 1) {
             $unit = 's';
             $time = round($microtime, $round);
@@ -237,7 +227,7 @@ class SQLQuery
             $unit = 'ms';
             $time = round($microtime*1000);
 
-            $format = preg_replace('/(%.[\d]+f)/', '%d', $format);
+            $format = preg_replace('/(%.\d+f)/', '%d', $format);
         }
 
         return sprintf($format, $time, $unit);

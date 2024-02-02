@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use OxidEsales\Eshop\Core\DatabaseProvider;
 
 require __DIR__ . '/../../../../source/bootstrap.php';
