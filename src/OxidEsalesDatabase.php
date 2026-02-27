@@ -20,6 +20,11 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class OxidEsalesDatabase extends Database
 {
+    public function __construct(protected ?SQLLogger $logger = null)
+    {
+        parent::__construct();
+    }
+
     /**
      * @param string|null $message
      *
@@ -31,15 +36,18 @@ class OxidEsalesDatabase extends Database
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
-        $this->d3GetConfiguration()->setSQLLogger(
-            new OxidSQLLogger(
+        $this->logger ??= new OxidSQLLogger();
+        if (method_exists($this->logger, 'prepare')) {
+            $this->logger->prepare(
                 $trace[1]['file'] ?? '',
                 array_key_exists('line', $trace[1]) ? (int) $trace[1]['line'] : 0,
                 $trace[2]['class'] ?? '',
                 $trace[2]['function'] ?? '',
                 $message
-            )
-        );
+            );
+        }
+
+        $this->d3GetConfiguration()->setSQLLogger($this->logger);
     }
 
     /**
@@ -70,7 +78,7 @@ class OxidEsalesDatabase extends Database
     {
         /** @var ConnectionProvider $connectionProvider */
         $connectionProvider = ContainerFactory::getInstance()->getContainer()
-                                              ->get(ConnectionProviderInterface::class);
+            ->get(ConnectionProviderInterface::class);
         return $connectionProvider->get()->getConfiguration();
     }
 }
