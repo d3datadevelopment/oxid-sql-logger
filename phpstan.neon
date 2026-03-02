@@ -8,7 +8,8 @@ parameters:
         - ./example
     level: 9
     phpVersion: 80300
-    checkMissingIterableValueType: false
     treatPhpDocTypesAsCertain: false
     featureToggles:
         disableRuntimeReflectionProvider: true
+    ignoreErrors:
+        - identifier: missingType.iterableValue

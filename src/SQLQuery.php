@@ -225,7 +225,7 @@ class SQLQuery
             $time = round($microtime, $round);
         } else {
             $unit = 'ms';
-            $time = round($microtime*1000);
+            $time = round($microtime * 1000);
 
             $format = (string) preg_replace('/(%.\d+f)/', '%d', $format);
         }

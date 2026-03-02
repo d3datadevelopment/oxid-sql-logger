@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Public/oxid-sql-logger/compare/1.3.3...master)
+## [Unreleased](https://git.d3data.de/D3Public/oxid-sql-logger/compare/2.1.0...master)
+
+## [2.1.0](https://git.d3data.de/D3Public/oxid-sql-logger/compare/2.0.0...2.1.0) - 2026-03-02
+### Changed
+- logger can be injected
+
+## [2.0.0](https://git.d3data.de/D3Public/oxid-sql-logger/compare/1.3.3...2.0.0) - 2024-02-02
+### Removed
+- PHP 7 support
 
 ## [1.3.3](https://git.d3data.de/D3Public/oxid-sql-logger/compare/1.3.2...1.3.3) - 2022-09-05
 ### Fixed
