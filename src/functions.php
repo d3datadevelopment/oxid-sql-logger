@@ -17,7 +17,7 @@ use Psr\Container\NotFoundExceptionInterface;
  * @throws ContainerExceptionInterface
  * @throws NotFoundExceptionInterface
  */
-function D3StartSQLLog(string $message = null): void
+function D3StartSQLLog(?string $message = null): void
 {
     /** @var OxidEsalesDatabase $database */
     $database = oxNew(OxidEsalesDatabase::class);

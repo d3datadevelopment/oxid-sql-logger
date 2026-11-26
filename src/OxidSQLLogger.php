@@ -31,7 +31,7 @@ class OxidSQLLogger implements SQLLogger
      * @param string      $function
      * @param string|null $message
      */
-    public function prepare(string $file, int $line, string $class, string $function, string $message = null): void
+    public function prepare(string $file, int $line, string $class, string $function, ?string $message = null): void
     {
         if (!Monolog\Registry::hasLogger('sql')) {
             Monolog\Registry::addLogger((new LoggerFactory())->create('sql'));

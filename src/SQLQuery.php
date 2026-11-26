@@ -74,7 +74,7 @@ class SQLQuery
      *
      * @return static
      */
-    public function setParams(array $params = null): static
+    public function setParams(?array $params = null): static
     {
         $this->parameters = $params;
         return $this;
@@ -93,7 +93,7 @@ class SQLQuery
      *
      * @return static
      */
-    public function setTypes(array $types = null): static
+    public function setTypes(?array $types = null): static
     {
         $this->parameterTypes = $types;
         return $this;

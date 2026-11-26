@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://git.d3data.de/D3Public/oxid-sql-logger/compare/2.1.0...master)
+## [Unreleased](https://git.d3data.de/D3Public/oxid-sql-logger/compare/2.1.1...master)
+
+## [2.1.1](https://git.d3data.de/D3Public/oxid-sql-logger/compare/2.1.0...2.1.1) - 2026-11-26
+### Fixed
+- prevent PHP 8.4 deprecation warnings for implicitly nullable parameters
 
 ## [2.1.0](https://git.d3data.de/D3Public/oxid-sql-logger/compare/2.0.0...2.1.0) - 2026-03-02
 ### Changed

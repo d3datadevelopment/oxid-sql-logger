@@ -32,7 +32,7 @@ class OxidEsalesDatabase extends Database
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function d3EnableLogger(string $message = null): void
+    public function d3EnableLogger(?string $message = null): void
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
